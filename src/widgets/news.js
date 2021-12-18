@@ -1,6 +1,8 @@
 const DATAKHK_DATASET_URL = 'https://www.datakhk.cz/datasets/{{ID}}/about';
 const DATAKHK_FEED_URL = 'https://www.arcgis.com/sharing/rest/content/groups/339c61fa68af42708bc4956ec52c7866?sortField=created&sortOrder=desc&f=json';
 
+const EFFECT_SPEED = 5000;
+
 const app = document.getElementById('app');
 
 (async function () {
@@ -22,14 +24,51 @@ const app = document.getElementById('app');
     return (x.created < y.created) ? 1 : ((x.created > y.created) ? -1 : 0);
   })
 
-  show(news[0]);
+  effect(news);
 })();
 
-function show(item) {
+function effect(items) {
+  let index = -1;
+
+  const handler = () => {
+    index = Math.min(index + 1, items.length - 1);
+    update(items[index]);
+  };
+
+  handler();
+  setInterval(handler, EFFECT_SPEED);
+}
+
+function update(item) {
   const url = DATAKHK_DATASET_URL.replace('{{ID}}', item.id);
   const date = (new Intl.DateTimeFormat('cs-CZ')).format(item.created);
 
+  fadeIn(app);
+
   app.innerHTML = `
-    <div><a href="${url}">${date} ${item.text}</a></div>
+    <div><a target="_parent" href="${url}">${date}: ${item.text}</a></div>
   `;
 }
+
+function fadeOut(el) {
+  el.style.opacity = 1;
+  (function fade() {
+    if ((el.style.opacity -= .1) < 0) {
+      el.style.display = "none";
+    } else {
+      requestAnimationFrame(fade);
+    }
+  })();
+};
+
+function fadeIn(el, display) {
+  el.style.opacity = 0;
+  el.style.display = display || "block";
+  (function fade() {
+    var val = parseFloat(el.style.opacity);
+    if (!((val += .01) > 1)) {
+      el.style.opacity = val;
+      requestAnimationFrame(fade);
+    }
+  })();
+};
