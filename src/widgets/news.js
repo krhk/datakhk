@@ -1,8 +1,8 @@
 const DATAKHK_DATASET_URL = 'https://www.datakhk.cz/datasets/{{ID}}/about';
-const DATAKHK_FEED_URL = 'https://www.arcgis.com/sharing/rest/content/groups/339c61fa68af42708bc4956ec52c7866?sortField=created&sortOrder=desc&f=json';
+const DATAKHK_FEED_URL = 'https://www.arcgis.com/sharing/rest/content/groups/339c61fa68af42708bc4956ec52c7866?sortField=modified&sortOrder=desc&f=json';
 const DATAKHK_PREFIX = 'Nové nebo aktualizované datové sady:';
 
-const EFFECT_SPEED = 5000;
+const EFFECT_SPEED = 3000;
 
 const url = new URL(window.location.href);
 const app = document.getElementById('app');
@@ -19,12 +19,13 @@ const app = document.getElementById('app');
         id: item.id,
         text: item.title,
         created: item.created,
+        modified: item.modified,
         prefix: url.searchParams.get('prefix') || DATAKHK_PREFIX
       }
     });
 
   news.sort((x, y) => {
-    return (x.created < y.created) ? 1 : ((x.created > y.created) ? -1 : 0);
+    return (x.modified < y.modified) ? 1 : ((x.modified > y.modified) ? -1 : 0);
   })
 
   effect(news);
@@ -44,12 +45,10 @@ function effect(items) {
 
 function update(item) {
   const url = DATAKHK_DATASET_URL.replace('{{ID}}', item.id);
-  const date = (new Intl.DateTimeFormat('cs-CZ')).format(item.created);
-
-  fadeIn(app);
+  const date = (new Intl.DateTimeFormat('cs-CZ')).format(item.modified);
 
   app.innerHTML = `
-    <div><a target="_parent" href="${url}">${item.prefix} <strong>${date} ${item.text}</strong></a></div>
+    <div><a target="_parent" href="${url}">${item.prefix} <span class="inline-block animate__animated animate__bounceInDown">${date} ${item.text}</div></a></div>
   `;
 }
 
