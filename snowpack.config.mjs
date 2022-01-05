@@ -6,5 +6,11 @@ export default {
 	},
 	devOptions: {
 		open: "none"
+	},
+	optimize: {
+		bundle: true,
+		minify: true,
+		manifest: true,
+		target: 'es2018',
 	}
 };
