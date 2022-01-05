@@ -1,3 +1,5 @@
+.PHONY: install dev build deploy publish
+
 install:
 	npm ci
 
