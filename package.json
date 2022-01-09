@@ -1,9 +1,11 @@
 {
 	"scripts": {
-	  "start": "snowpack dev",
-	  "build": "snowpack build"
+		"start": "snowpack dev",
+		"build": "snowpack build",
+		"postbuild": "esbuild build/dist/widgets/news.js --outdir=build/dist/widgets --minify --allow-overwrite"
 	},
 	"devDependencies": {
-	  "snowpack": "^3.3.7"
+		"esbuild": "^0.14.11",
+		"snowpack": "^3.3.7"
 	}
-  }
+}
