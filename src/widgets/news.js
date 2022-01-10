@@ -2,7 +2,7 @@ const DATAKHK_DATASET_URL = 'https://www.datakhk.cz/datasets/{{ID}}/about';
 const DATAKHK_FEED_URL = 'https://www.arcgis.com/sharing/rest/content/groups/339c61fa68af42708bc4956ec52c7866?sortField=modified&sortOrder=desc&f=json';
 const DATAKHK_PREFIX = 'Nové nebo aktualizované datové sady:';
 
-const EFFECT_SPEED = 4000;
+const EFFECT_SPEED = 5000;
 
 const url = new URL(window.location.href);
 const app = document.getElementById('app');
@@ -48,7 +48,7 @@ function update(item) {
   const date = (new Intl.DateTimeFormat('cs-CZ')).format(item.modified);
 
   app.innerHTML = `
-    <div><a target="_parent" href="${url}">${item.prefix} <span class="inline-block animate__animated animate__bounceInDown animate__slow">${date} ${item.text}</div></a></div>
+    <div><a target="_parent" href="${url}">${item.prefix} <span class="bold inline-block animate__animated animate__bounceInDown animate__slow">${date} ${item.text}</div></a></div>
   `;
 }
 
