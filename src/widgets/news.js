@@ -36,20 +36,19 @@ function effect(items) {
 
   const handler = () => {
     index = Math.min(index + 1, items.length - 1);
-    update(items[index]);
+    update(items[index], { firstTime: index === 0 });
   };
 
   handler();
   setInterval(handler, EFFECT_SPEED);
 }
 
-function update(item) {
+function update(item, options = {}) {
   const url = DATAKHK_DATASET_URL.replace('{{ID}}', item.id);
   const date = (new Intl.DateTimeFormat('cs-CZ')).format(item.modified);
+  const classes = `bold inline-block animate__animated ${options.firstTime ? "animate__faster animate__fadeIn" : "animate__bounceInDown animate__slow"}`;
 
-  app.innerHTML = `
-    <div><a target="_parent" href="${url}">${item.prefix} <span class="bold inline-block animate__animated animate__bounceInDown animate__slow">${date} ${item.text}</div></a></div>
-  `;
+  app.innerHTML = `<div><a target="_parent" href="${url}">${item.prefix} <span class="${classes}">${date} ${item.text}</div></a></div> `;
 }
 
 function fadeOut(el) {
